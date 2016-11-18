@@ -1,0 +1,10 @@
+
+
+
+selections
+didSelect/didDeselct delegate methods - this is the touch up
+didHighlight/ didUnhighlight - this is the touch down
+UICollectionViewCell has a stack of background views which can track selections
+cell.contentView
+cellbackgroundView
+cell.selectedBackgroundView
