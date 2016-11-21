@@ -8,3 +8,9 @@ UICollectionViewCell has a stack of background views which can track selections
 cell.contentView
 cellbackgroundView
 cell.selectedBackgroundView
+
+
+Cell
+content view - which labels, images are in
+selected background view - accessed for highlighting
+background view

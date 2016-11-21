@@ -24,57 +24,46 @@
     self.sectionInset = UIEdgeInsetsMake(30, 10, 30, 10);
     self.minimumLineSpacing = 30;
     self.scrollDirection  = UICollectionViewScrollDirectionHorizontal;
-//    
-//    if (self.savedAttributes.count > 0) return;
-//    
-//    NSMutableArray *temp = [NSMutableArray array];
-//    for (int item = 0; item < [self.collectionView numberOfItemsInSection:0]; item++) {
-//        NSIndexPath *ip = [NSIndexPath indexPathForRow:item inSection:0];
-//        
-//        UICollectionViewLayoutAttributes *attr = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:ip];
-//        
-//        CGFloat randX = arc4random_uniform(200);
-//        CGFloat randY = arc4random_uniform(200);
-//        
-//        attr.frame = CGRectMake(randX, randY, 10, 10);
-//        
-// 
-//       CGFloat dX = arc4random_uniform(2)+1;
-//        CGFloat dY = arc4random_uniform(2)+1;
-//        
-//        attr.transform = CGAffineTransformMakeScale(dX, dY);
-//        [temp addObject:attr];
-//    }
-//    
-//    self.savedAttributes = temp;
-
 }
 
+-(NSArray<UICollectionViewLayoutAttributes *
+  >
+  *)layoutAttributesForElementsInRect:(CGRect)rect {
+    NSArray *original = [super layoutAttributesForElementsInRect:rect];
+    NSArray * attributes = [[NSArray alloc] initWithArray:original copyItems:YES];
+    
+    CGRect visibleRegion;
+    visibleRegion.origin = self.collectionView.contentOffset;
+    visibleRegion.size = self.collectionView.bounds.size;
+    CGFloat center = self.collectionView.center.x;
+    
+    for (UICollectionViewLayoutAttributes *attribute in attributes) {
+        CGFloat distance = CGRectGetMidX(visibleRegion) - attribute.center.x;
+        CGFloat d = distance / center;
+        
+        if (ABS(distance) < center) {
+            
+            CGFloat zoom = 1 + (0.75 * (1 - ABS(d)));
+            CATransform3D zoomTransform = CATransform3DMakeScale(zoom, zoom, 1.0);
+            attribute.transform3D = zoomTransform;
+            
+            CGFloat alphaValue = (1 - ABS(d)) + 0.1;
+            if (alphaValue > 1) alphaValue = 1;
+            attribute.alpha = alphaValue;
+            
+            attribute.zIndex = (1-ABS(d))*10;
+        }
+        else
+        {
+            attribute.alpha = 0;
+        }
+    }
+    
+    return attributes;
+}
 
-//- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:
-//(NSIndexPath *)indexPath
-//{
-//    NSMutableArray *result = [NSMutableArray array];
-//    
-//    for (UICollectionViewLayoutAttributes *attributes in self.savedAttributes) {
-//        if (CGRectIntersectsRect(attributes.frame, rect)) {
-//            [result addObject:attributes];
-//        }
-//    }
-//    
-//    return result;
-//}
-
-
-//-(CGSize)collectionViewContentSize
-//{
-//   //
-//}
-
-//-(NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect
-//{
-//    //
-//}
-
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
+    return YES;
+}
 
 @end

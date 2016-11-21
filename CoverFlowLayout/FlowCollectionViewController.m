@@ -24,7 +24,7 @@ static NSString * const reuseIdentifier = @"imageCell";
     
     [self setUpData];
     
-    
+    self.collectionView.allowsMultipleSelection = NO;
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -62,11 +62,11 @@ static NSString * const reuseIdentifier = @"imageCell";
 {
     
 }
-
--(BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
+//
+//-(BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//}
 
 -(void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath
 {
